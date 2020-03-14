@@ -1,0 +1,29 @@
+body{
+    background: green;
+}
+
+main{
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+}
+
+.cell{
+    width: 200px;
+    height: 200px;
+}
+
+.row{
+    display: flex;
+    width: 100%;
+}
+
+.center-col{
+    border-left: solid 3px black;
+    border-right: solid 3px black;
+}
+
+.center-row{
+    border-top: solid 3px black;
+    border-bottom: solid 3px black;
+}
