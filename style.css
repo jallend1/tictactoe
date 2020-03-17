@@ -8,6 +8,10 @@ main{
     width: 60%;
 }
 
+div img{
+    max-width: 100%;
+}
+
 .cell{
     width: 200px;
     height: 200px;
