@@ -1,10 +1,12 @@
 const cells = document.querySelectorAll('.cell');
 const gameInfo = document.querySelector('#gameinfo');
-let quinto = '<img src="quinto.png">';
-let nimoy = '<img src="nimoy.png">';
+const reset = document.querySelector('#reset');
+const quinto = '<img src="quinto.png">';
+const nimoy = '<img src="nimoy.png">';
 let isX = false;
 let playedSquares = [];
 let turn = 0;
+let gameOver = false;
 let latestMove;
 
 const winningCombos = [
@@ -18,33 +20,39 @@ const winningCombos = [
     [6, 7, 8]
 ];
 
-
-function checkWinner(latestMove){       // Victory conditions
-    if(playedSquares[0] === latestMove && playedSquares[1] === latestMove && playedSquares[2] === latestMove){      // Top row 
-        console.log('WINNER!');
-    }else if(playedSquares[0] === latestMove && playedSquares[3] === latestMove && playedSquares[6] === latestMove){ // Left column
-        console.log('WINNER!');
-    }else if(playedSquares[0] === latestMove && playedSquares[4] === latestMove && playedSquares[8] === latestMove){ // L-R diagonal
-        console.log('WINNER!');
-    }else if(playedSquares[1] === latestMove && playedSquares[4] === latestMove && playedSquares[7] === latestMove){ // Middle column
-        console.log('WINNER!');
-    }else if(playedSquares[2] === latestMove && playedSquares[4] === latestMove && playedSquares[6] === latestMove){ // R-L Diagonal
-        console.log('WINNER!');
-    }else if(playedSquares[2] === latestMove && playedSquares[5] === latestMove && playedSquares[8] === latestMove){ // Right column
-        console.log('WINNER!');
-    }else if(playedSquares[3] === latestMove && playedSquares[4] === latestMove && playedSquares[5] === latestMove){ // Middle column
-        console.log('WINNER!');
-    }else if(playedSquares[6] === latestMove && playedSquares[7] === latestMove && playedSquares[8] === latestMove){ // Bottom row
-        console.log('WINNER!');
-    }else{
-        return false;
-    }
+function checkWinner(latestMove){
+    winningCombos.forEach(win => {
+        if((playedSquares[win[0]] == latestMove) && (playedSquares[win[1]] == latestMove) && (playedSquares[win[2]] == latestMove)){
+            console.log('WINNER');
+            victory(win);
+        }
+    })
+    return false;
 }
 
-function gameOver(){
+function checkGameOver(){
     if(checkWinner(latestMove) === false){
         console.log("IT'S A DRAW!");
     }
+}
+
+function resetGame(){
+    cells.forEach(square => {
+        square.innerHTML = '';
+        square.isPlayed = '';
+    });
+    playedSquares = [];
+    gameOver = false;
+    latestMove = '';
+    turn = 0;
+    isX = false;
+}
+
+function victory(winningCells){
+    winningCells.forEach(win => {
+        cells[win].classList.add('winners');
+    });
+    gameOver = true;
 }
 
 cells.forEach(function(cell, index){
@@ -53,16 +61,20 @@ cells.forEach(function(cell, index){
             gameInfo.innerHTML = `<p>That square has been played!</p>`;
             return;
         }
-        isX = !isX;                                                         // Changes the turn 
-        isX ? e.target.innerHTML = quinto : e.target.innerHTML = nimoy;     // Plays Quinto or Nimoy
-        isX ? playedSquares[index] = "quinto" : playedSquares[index] = "nimoy"
-        isX ? latestMove = "quinto" : latestMove = "nimoy";
-        gameInfo.innerHTML = `<p>${isX}</p>`;
-        cell.isPlayed = true;                                               // Marks square as played
-        checkWinner(latestMove);
-        turn++;
-        if(turn === 9){
-            gameOver();
+        if(!gameOver){
+            isX = !isX;                                                         // Changes the turn 
+            isX ? e.target.innerHTML = quinto : e.target.innerHTML = nimoy;     // Plays Quinto or Nimoy
+            isX ? playedSquares[index] = "quinto" : playedSquares[index] = "nimoy"
+            isX ? latestMove = "quinto" : latestMove = "nimoy";
+            gameInfo.innerHTML = `<p>${isX}</p>`;
+            cell.isPlayed = true;                                               // Marks square as played
+            checkWinner(latestMove);
+            turn++;
+            if(turn === 9){
+                checkGameOver();
+            }
         }
     });
 });
+
+reset.addEventListener('click', resetGame);

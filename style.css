@@ -31,3 +31,7 @@ div img{
     border-top: solid 3px black;
     border-bottom: solid 3px black;
 }
+
+.winners{
+    background: red;
+}
