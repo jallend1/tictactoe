@@ -26,7 +26,7 @@ function checkWinner(latestMove){
             console.log('WINNER');
             victory(win);
         }
-    })
+    });
     return false;
 }
 
