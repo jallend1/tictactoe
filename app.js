@@ -1,13 +1,15 @@
 const cells = document.querySelectorAll('.cell');
 const gameInfo = document.querySelector('#gameinfo');
 const reset = document.querySelector('#reset');
+const playerIdentifier = document.querySelector('#playeridentifier');
 const quinto = '<img src="quinto.png">';
 const nimoy = '<img src="nimoy.png">';
+let player = 1;
 let isX = false;
 let playedSquares = [];
 let turn = 0;
 let gameOver = false;
-let latestMove;
+let latestMove = "Nimoy";
 
 const winningCombos = [
     [0, 1, 2],
@@ -23,7 +25,6 @@ const winningCombos = [
 function checkWinner(latestMove){
     winningCombos.forEach(win => {
         if((playedSquares[win[0]] == latestMove) && (playedSquares[win[1]] == latestMove) && (playedSquares[win[2]] == latestMove)){
-            console.log('WINNER');
             victory(win);
         }
     });
@@ -53,26 +54,29 @@ function victory(winningCells){
         cells[win].classList.add('winners');
     });
     gameOver = true;
+    player === 1 ? player = 2 : player = 1;
+    gameInfo.innerHTML = `Player ${player} wins!!`;
 }
 
 cells.forEach(function(cell, index){
     cell.addEventListener('click', (e) => {
         if(cell.isPlayed){                                                  // Exits if square is already played
-            gameInfo.innerHTML = `<p>That square has been played!</p>`;
+            gameInfo.innerHTML = `<p>That square has already been played!</p>`;
             return;
         }
         if(!gameOver){
             isX = !isX;                                                         // Changes the turn 
+            isX ? latestMove = "Quinto" : latestMove = "Nimoy";
             isX ? e.target.innerHTML = quinto : e.target.innerHTML = nimoy;     // Plays Quinto or Nimoy
-            isX ? playedSquares[index] = "quinto" : playedSquares[index] = "nimoy"
-            isX ? latestMove = "quinto" : latestMove = "nimoy";
-            gameInfo.innerHTML = `<p>${isX}</p>`;
+            isX ? playedSquares[index] = "Quinto" : playedSquares[index] = "Nimoy"
             cell.isPlayed = true;                                               // Marks square as played
-            checkWinner(latestMove);
+            player === 1 ? player = 2 : player = 1;
+            playerIdentifier.innerHTML = player;
             turn++;
             if(turn === 9){
                 checkGameOver();
             }
+            checkWinner(latestMove);
         }
     });
 });

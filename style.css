@@ -1,18 +1,27 @@
 body{
-    background: green;
 }
 
 #container{
     display: flex;
     justify-content: center;
-    width: 100%;
+    width: 80%;
+}
+
+h1{
+    text-align: center;
+    font-family: 'Baloo Da 2', cursive;
+}
+
+h3{
+    text-align: center;
+    font-family: 'Open Sans Condensed', sans-serif;
 }
 
 main{
     display: flex;
     flex-direction: column;
-    width: 40%;
 }
+
 
 div img{
     max-width: 100%;
@@ -23,6 +32,8 @@ div img{
 .cell{
     width: 10rem;
     height: 10rem;
+    transition: all;
+    transition-duration: 1.5s;    
 }
 
 .row{
@@ -42,4 +53,5 @@ div img{
 
 .winners{
     background: blue;
+    transform: rotate(720deg);
 }
